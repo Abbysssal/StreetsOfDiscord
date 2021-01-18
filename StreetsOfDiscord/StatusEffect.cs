@@ -5,11 +5,20 @@ using System.Collections.ObjectModel;
 
 namespace StreetsOfDiscord
 {
-	public abstract class StatusEffect
+	public abstract class StatusEffect : IHasCharacterProperty, IHasTooltip
 	{
 		public Character Character { get; set; }
-		protected StatusEffect(int ticks) => Ticks = ticks;
-		public int Ticks { get; set; }
-		public virtual void Tick() => Ticks--;
+		public abstract int BaseEffectDuration { get; }
+		private int ticksLeft; public int TicksLeft
+		{
+			get => ticksLeft;
+			set
+			{
+				ticksLeft = value;
+				if (value <= 0) Character.RemoveStatusEffect(this);
+			}
+		}
+		public virtual void Tick() => TicksLeft--;
+		public abstract FormattedString GetTooltip();
 	}
 }

@@ -6,14 +6,16 @@ using System.Reflection;
 
 namespace StreetsOfDiscord
 {
-	public abstract class Item : IInventoryItem
+	public abstract class Item : IHasInventoryProperty, IHasCharacterProperty
 	{
+		protected Item(GlobalItemData data) : this(data, data.InitCount) { }
 		protected Item(GlobalItemData data, int count)
 		{
 			Data = data;
 			Count = count;
 		}
 		public Inventory Inventory { get; set; }
+		public Character Character => Inventory.Character;
 		private int count; public int Count
 		{
 			get => count;
@@ -30,7 +32,7 @@ namespace StreetsOfDiscord
 		public ItemType Type => Data.Type;
 		public ReadOnlyCollection<string> Categories => Data.Categories;
 	}
-	public interface IRestoresHealth
+	public interface IChangesHealth
 	{
 		int BaseHealthChange { get; }
 	}

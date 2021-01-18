@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace StreetsOfDiscord
 {
-	public abstract class Character : IInventoryHolder
+	public abstract class Character : IHasInventoryProperty
 	{
 		protected Character()
 		{
@@ -67,10 +67,18 @@ namespace StreetsOfDiscord
 		public bool HasTrait(string trait) => traits.Exists(t => t.Name == trait);
 		public Trait GetTrait(string trait) => traits.Find(t => t.Name == trait);
 
+		public T AddStatusEffect<T>() where T : StatusEffect, new()
+		{
+			T effect = new T { Character = this };
+			effects.Add(effect);
+			effect.TicksLeft = effect.GetEffectDuration();
+			return effect;
+		}
 		public void AddStatusEffect(StatusEffect effect)
 		{
 			effect.Character = this;
 			effects.Add(effect);
+			if (effect.TicksLeft == 0) effect.TicksLeft = effect.GetEffectDuration();
 		}
 		public bool RemoveStatusEffect<T>() where T : StatusEffect
 		{

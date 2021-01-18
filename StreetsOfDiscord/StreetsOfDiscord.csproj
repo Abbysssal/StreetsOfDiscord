@@ -10,7 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="StatusEffects\" />
+    <PackageReference Include="DSharpPlus" Version="4.0.0-nightly-00783" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="AbbLab.Utilities">
+      <HintPath>..\Libraries\AbbLab.Utilities.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
